@@ -21,6 +21,6 @@ To publish an image, create credentials for the container registry:
 This only needs to be done once:
 
 ```sh
-> source .env  # activates credentials (do once per shell session)
+> set -a; source .env; set +a  # activates credentials (do once per shell session)
 > ./push-image fully_qualified_image_name
 ```
