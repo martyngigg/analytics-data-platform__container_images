@@ -7,8 +7,14 @@ set -euo pipefail
 PLATFORM="linux/amd64"
 REGISTRY="ghcr.io"
 NAMESPACE="martyngigg"
+BUILD_BASE_IMAGE_FILE="build-base-image.sh"
 
 # Functions
+function fail_with_msg() {
+  echo $*
+  exit 1
+}
+
 function docker_build() {
   local dockerfile_path=$1
   local tag=$2
@@ -20,10 +26,18 @@ if [ $# -ne 1 ]; then
   echo "Usage: ${0} dockerfile_path"
   exit 1
 fi
+dockerfile_path=$1
+
+# Valid tag?
+tag_file="$dockerfile_path/tag"
+test -f "$tag_file" || fail_with_msg "Missing required file '$dockerfile_path/tag'."
+tag=$(cat "$tag_file")
+test -n "$tag" || fail_with_msg "'$dockerfile_path/tag' file is empty"
+
+# Do we need to build a base image?
+test -f "$dockerfile_path/$BUILD_BASE_IMAGE_FILE" && "$dockerfile_path/$BUILD_BASE_IMAGE_FILE"
 
 # Build
-dockerfile_path=$1
-tag=$(cat "$dockerfile_path/tag")
 fully_qualified_image_name="${REGISTRY}/${NAMESPACE}/${tag}"
 docker_build "$dockerfile_path" $fully_qualified_image_name
 
