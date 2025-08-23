@@ -1,0 +1,2 @@
+CR_USERNAME=<github username>
+CR_PAT=<github access token with write_packages access>
