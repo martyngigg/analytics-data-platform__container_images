@@ -19,6 +19,8 @@ RUN /app/docker/pip-install.sh --requires-build-essential \
     Pillow==11.3.0 \
     # For trend prediction on charts
     prophet==1.1.5 \
+    # Redis for caching results
+    redis==6.4.0 \
     # install Playwright for taking screenshots for Alerts & Reports.
     # This assumes the feature flag PLAYWRIGHT_REPORTS_AND_THUMBNAILS is enabled
     # That feature flag will default to True starting in 6.0.0
