@@ -34,6 +34,7 @@ fi
 
 echo "Logging into $registry as $CR_USERNAME"
 echo $CR_PAT | docker login $registry -u $CR_USERNAME --password-stdin
+trap "docker logout \"$registry\"" EXIT
 
 echo "Pushing $fully_qualified_image_name"
 docker push $fully_qualified_image_name
